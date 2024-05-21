@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {View} from 'react-native';
 import {FAB} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -11,6 +12,10 @@ function Task(): JSX.Element {
   //   const startDate = selectedStartDate
   //     ? selectedStartDate.format('YYYY-MM-DD').toString()
   //     : '';
+  const counterState = useSelector(state => state.counter);
+  const {count} = counterState;
+  const dispatch = useDispatch();
+
   const [taskList, setTaskList] = useState([]);
 
   const handleAddTask = () => {
@@ -20,6 +25,8 @@ function Task(): JSX.Element {
   console.log('taskList length: ', taskList.length);
   console.log('taskList : ', taskList);
 
+  console.log('count : ', count);
+
   const notification = new LocalNotification();
 
   return (
@@ -28,8 +35,8 @@ function Task(): JSX.Element {
         <View>
           {taskList?.length > 0 &&
             taskList.map((item, idx) => {
-              console.log('item :: ', item);
-              console.log('idx :: ', idx);
+              // console.log('item :: ', item);
+              // console.log('idx :: ', idx);
               return (
                 <CardTask
                   id={idx}
@@ -49,7 +56,8 @@ function Task(): JSX.Element {
           right: 0,
           bottom: 0,
         }}
-        onPress={handleAddTask}
+        // onPress={handleAddTask}
+        onPress={() => dispatch({type: 'INCREMENT'})}
       />
       <FAB
         label="Noti"
@@ -59,8 +67,8 @@ function Task(): JSX.Element {
           right: 90,
           bottom: 0,
         }}
-        // onPress={LocalNotification}
-        onPress={() => notification.alertLocalNotification()}
+        // onPress={() => notification.alertLocalNotification()}
+        onPress={() => dispatch({type: 'DECREMENT'})}
       />
     </View>
   );

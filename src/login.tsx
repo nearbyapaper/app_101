@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 
 import {Snackbar} from 'react-native-paper';
 
@@ -21,24 +23,31 @@ function Login(props): JSX.Element {
 
   const {navigation} = props;
 
+  const isFocused = useIsFocused();
+
   const checkLogin = () => {
     if (username != '' && password != '') {
       if (username === '1' && password === '1') {
         gotoHome();
       } else {
         onToggleSnackBar();
-        console.log('Username and Password not correct');
       }
     } else {
       onToggleSnackBar();
-      console.log('Username and Password not correct');
     }
   };
 
   const gotoHome = () => {
-    console.log('Go to Home');
     navigation.navigate('Home');
   };
+
+  React.useEffect(() => {
+    if (isFocused) {
+      setUsername('');
+      setPassword('');
+    }
+    return () => {};
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
