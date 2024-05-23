@@ -3,11 +3,13 @@ import React from 'react';
 import {BottomNavigation, Text} from 'react-native-paper';
 import Task from './task';
 import {View} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import DailyMission from './daily';
 
 function Home(): JSX.Element {
   const MusicRoute = () => <Task />;
 
-  const AlbumsRoute = () => <Text>Albums</Text>;
+  const AlbumsRoute = () => <DailyMission />;
 
   const RecentsRoute = () => <Text>Recents</Text>;
 
@@ -23,7 +25,7 @@ function Home(): JSX.Element {
     },
     {
       key: 'feat2',
-      title: 'Albums',
+      title: 'Daily Mission',
       // focusedIcon: 'album'
     },
     {
@@ -48,11 +50,13 @@ function Home(): JSX.Element {
 
   return (
     <View style={{flexDirection: 'column', flex: 1}}>
-      <BottomNavigation
-        navigationState={{index, routes}}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
+      <SafeAreaProvider>
+        <BottomNavigation
+          navigationState={{index, routes}}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+        />
+      </SafeAreaProvider>
     </View>
   );
 }

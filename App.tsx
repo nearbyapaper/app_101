@@ -1,8 +1,10 @@
 // App.tsx
 import 'react-native-gesture-handler';
 import * as React from 'react';
+// import {Button, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+// import {createDrawerNavigator} from '@react-navigation/drawer';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import PushNotification from 'react-native-push-notification';
@@ -62,6 +64,30 @@ const App: React.FC = () => {
       requestPermissions: true,
     });
   }, []);
+
+  // function NotificationsScreen({navigation}) {
+  //   return (
+  //     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+  //       <Button onPress={() => navigation.goBack()} title="Go back home" />
+  //     </View>
+  //   );
+  // }
+
+  // const Drawer = createDrawerNavigator();
+
+  // const DrawerNavWrapper = () => {
+  //   <Drawer.Navigator>
+  //     <Drawer.Screen name="Home" component={HomeScreen} />
+  //     <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+  //   </Drawer.Navigator>;
+  // };
+
+  // const StackNavWrapper = () => {
+  //   <Stack.Navigator initialRouteName="LoginScreen">
+  //     <Stack.Screen name="Login" component={LoginScreen} />
+  //     <Stack.Screen name="Home" component={HomeScreen} />
+  //   </Stack.Navigator>;
+  // };
 
   return (
     <Provider store={store}>
