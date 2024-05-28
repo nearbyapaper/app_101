@@ -1,5 +1,4 @@
 import {UPDATE, ADD} from '../types/dialy-type';
-
 interface Mission {
   name: string;
   isDone: boolean;
@@ -7,7 +6,6 @@ interface Mission {
 }
 
 export interface UpdateDailyAction {
-  action: Mission;
   payload: Mission[];
   type: typeof UPDATE;
 }

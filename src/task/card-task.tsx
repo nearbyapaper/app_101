@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Card, Text, Chip, TextInput} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
 
 interface Task {
   id: string;
@@ -16,86 +17,88 @@ interface CardTaskProps {
   data: Task;
   id: string;
   list: Task[];
-  setTaskList: (list: Task[]) => void;
 }
 
-const CardTask: React.FC<CardTaskProps> = ({data, id, list, setTaskList}) => {
+const CardTask: React.FC<CardTaskProps> = ({data, id, list}) => {
   const [editable, setEditable] = useState(false);
-  const [name, setName] = useState(data.name);
-  const [type, setType] = useState(data.type);
-  const [status, setStatus] = useState(data.status);
-  const [detail, setDetail] = useState(data.detail);
-  const [targetDate, setTargetDate] = useState(data.targetDate);
+  const [taskDetails, setTaskDetails] = useState({
+    name: data.name,
+    type: data.type,
+    status: data.status,
+    detail: data.detail,
+    targetDate: data.targetDate,
+  });
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setName(data.name);
-    setType(data.type);
-    setStatus(data.status);
-    setDetail(data.detail);
-    setTargetDate(data.targetDate);
+    setTaskDetails({
+      name: data.name,
+      type: data.type,
+      status: data.status,
+      detail: data.detail,
+      targetDate: data.targetDate,
+    });
   }, [data]);
 
-  const handleEditOrSave = () => {
+  const handleEditOrSave = useCallback(() => {
     if (editable) {
-      const updatedTask: Task = {
-        ...data,
-        name,
-        type,
-        status,
-        detail,
-        targetDate,
-      };
-
+      const updatedTask: Task = {...data, ...taskDetails};
       const updatedList = list.map(task =>
         task.id === id ? updatedTask : task,
       );
-      setTaskList(updatedList);
+
+      dispatch({type: 'UPDATE_TASK', payload: updatedList});
     }
     setEditable(!editable);
-  };
+  }, [editable, taskDetails, data, id, list, dispatch]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     const updatedList = list.filter(task => task.id !== id);
-    setTaskList(updatedList);
-  };
+    dispatch({type: 'UPDATE_TASK', payload: updatedList});
+  }, [id, list, dispatch]);
+
+  const handleChange = useCallback((field: keyof Task, value: string) => {
+    setTaskDetails(prev => ({...prev, [field]: value}));
+  }, []);
 
   return (
     <View>
       <Card style={styles.card}>
-        <Text variant="bodyMedium">Task :</Text>
+        <Text variant="bodyMedium">Task:</Text>
         <TextInput
-          value={name}
+          value={taskDetails.name}
           editable={editable}
-          onChangeText={setName}
+          onChangeText={text => handleChange('name', text)}
           style={styles.input}
         />
-        <Text variant="bodyMedium">Type :</Text>
+        <Text variant="bodyMedium">Type:</Text>
         <TextInput
-          value={type}
+          value={taskDetails.type}
           editable={editable}
-          onChangeText={setType}
+          onChangeText={text => handleChange('type', text)}
           style={styles.input}
         />
-        <Text variant="bodyMedium">Status : </Text>
+        <Text variant="bodyMedium">Status:</Text>
         <TextInput
-          value={status}
+          value={taskDetails.status}
           editable={editable}
-          onChangeText={setStatus}
+          onChangeText={text => handleChange('status', text)}
           style={styles.input}
         />
         <Text variant="bodyMedium">
-          Create : {data.createdDate?.toString() || new Date().toString()}
+          Create: {data.createdDate?.toString() || new Date().toString()}
         </Text>
-        <Text variant="bodyMedium">Detail : </Text>
+        <Text variant="bodyMedium">Detail:</Text>
         <TextInput
-          value={detail}
+          value={taskDetails.detail}
           editable={editable}
-          onChangeText={setDetail}
+          onChangeText={text => handleChange('detail', text)}
           style={styles.input}
         />
         <View style={styles.chipContainer}>
           <Chip onPress={handleEditOrSave} style={styles.chip}>
-            {!editable ? 'Edit' : 'Save'}
+            {editable ? 'Save' : 'Edit'}
           </Chip>
           <Chip onPress={handleDelete} style={styles.chip}>
             Delete
@@ -113,12 +116,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    marginBottom: 4,
+    marginBottom: 8,
   },
   chipContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 8,
+    marginTop: 16,
   },
   chip: {
     marginRight: 8,

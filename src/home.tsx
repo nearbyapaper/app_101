@@ -1,56 +1,37 @@
-import React from 'react';
-
+import React, {useState, useMemo} from 'react';
 import {BottomNavigation, Text} from 'react-native-paper';
-import Task from './task';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import MyTask from './task';
 import DailyMission from './daily';
 
-function Home(): JSX.Element {
-  const MusicRoute = () => <Task />;
+const Home = (): JSX.Element => {
+  const [index, setIndex] = useState(0);
 
-  const AlbumsRoute = () => <DailyMission />;
+  const routes = useMemo(
+    () => [
+      {key: 'feat1', title: 'Task'},
+      {key: 'feat2', title: 'Daily Mission'},
+      {key: 'feat3', title: 'Recents'},
+      {key: 'feat4', title: 'Notifications'},
+    ],
+    [],
+  );
 
-  const RecentsRoute = () => <Text>Recents</Text>;
-
-  const NotificationsRoute = () => <Text>Notifications</Text>;
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {
-      key: 'feat1',
-      title: 'Task',
-      // focusedIcon: 'heart',
-      // unfocusedIcon: 'heart-outline',
-    },
-    {
-      key: 'feat2',
-      title: 'Daily Mission',
-      // focusedIcon: 'album'
-    },
-    {
-      key: 'feat3',
-      title: 'Recents',
-      // focusedIcon: 'history'
-    },
-    {
-      key: 'feat4',
-      title: 'Notifications',
-      // focusedIcon: 'bell',
-      // unfocusedIcon: 'bell-outline',
-    },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    feat1: MusicRoute,
-    feat2: AlbumsRoute,
-    feat3: RecentsRoute,
-    feat4: NotificationsRoute,
-  });
+  const renderScene = useMemo(
+    () =>
+      BottomNavigation.SceneMap({
+        feat1: MyTask,
+        feat2: DailyMission,
+        feat3: () => <Text>Recents</Text>,
+        feat4: () => <Text>Notifications</Text>,
+      }),
+    [],
+  );
 
   return (
-    <View style={{flexDirection: 'column', flex: 1}}>
-      <SafeAreaProvider>
+    <View style={styles.container}>
+      <SafeAreaProvider style={styles.safeArea}>
         <BottomNavigation
           navigationState={{index, routes}}
           onIndexChange={setIndex}
@@ -59,25 +40,11 @@ function Home(): JSX.Element {
       </SafeAreaProvider>
     </View>
   );
-}
+};
 
-// const styles = StyleSheet.create({
-//   sectionContainer: {
-//     marginTop: 32,
-//     paddingHorizontal: 24,
-//   },
-//   sectionTitle: {
-//     fontSize: 24,
-//     fontWeight: '600',
-//   },
-//   sectionDescription: {
-//     marginTop: 8,
-//     fontSize: 18,
-//     fontWeight: '400',
-//   },
-//   highlight: {
-//     fontWeight: '700',
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {flex: 1},
+  safeArea: {flex: 1, paddingBottom: 10},
+});
 
 export default Home;
