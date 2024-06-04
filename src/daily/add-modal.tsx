@@ -49,32 +49,16 @@ const AddModal: React.FC<ModalProps> = ({visible, setVisible}) => {
       onBackdropPress={() => setVisible(false)}
       style={styles.modal}>
       <View style={styles.modalView}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-end',
-          }}>
+        <View style={styles.container}>
           <Text style={styles.modalText}>Name :</Text>
           <TextInput
             value={name}
             onChangeText={val => setName(val)}
-            style={{
-              width: '60%',
-              borderWidth: 1,
-              padding: 10,
-              marginLeft: 8,
-            }}
+            style={styles.inputTextName}
           />
         </View>
         <View>
-          <TouchableOpacity
-            onPress={handleSave}
-            style={{
-              borderWidth: 1,
-              borderRadius: 5,
-              padding: 10,
-              marginTop: 10,
-            }}>
+          <TouchableOpacity onPress={handleSave} style={styles.okButton}>
             <Text>OK</Text>
           </TouchableOpacity>
         </View>
@@ -109,6 +93,22 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  okButton: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+  },
+  inputTextName: {
+    width: '60%',
+    borderWidth: 1,
+    padding: 10,
+    marginLeft: 8,
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
 });
 

@@ -39,17 +39,6 @@ const MissionsBoard: React.FC<BoardProps> = ({
             <Text>+</Text>
           </TouchableOpacity>
         </View>
-        {/* <View style={styles.alignCenter}>
-          {missions.map((mission, index) => (
-            <View key={index} style={styles.cardContent}>
-              <Text>{mission.name}</Text>
-              <Switch
-                value={mission.isDone}
-                onValueChange={value => handleSwitchChange(index, value)}
-              />
-            </View>
-          ))}
-        </View> */}
         {missions.length > 0 && (
           <FlatList
             data={missions}

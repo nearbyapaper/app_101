@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,132 +8,167 @@ import {
   TextInput,
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
-
 import {Snackbar} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+import {loginUser} from './redux/actions/user-action';
 
-function Login(props): JSX.Element {
+function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [visible, setVisible] = React.useState(false);
-
-  const onToggleSnackBar = () => setVisible(!visible);
-
-  const onDismissSnackBar = () => setVisible(false);
-
-  const {navigation} = props;
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   const checkLogin = () => {
-    if (username != '' && password != '') {
-      if (username === '1' && password === '1') {
-        gotoHome();
-      } else {
-        onToggleSnackBar();
-      }
+    if (!username || !password) {
+      setSnackbarMessage('Please enter both username and password');
+      setSnackbarVisible(true);
+      return;
+    }
+
+    if (username === '1' && password === '1') {
+      navigation.navigate('Home');
     } else {
-      onToggleSnackBar();
+      // setSnackbarMessage('Invalid username or password');
+      // setSnackbarVisible(true);
+      // dispatch({
+      //   type: 'user/loginUser',
+      //   payload: {
+      //     userName: username,
+      //     password: password,
+      //   },
+      // });
+      // dispatch(loginUser(userName: username, password: password));
+      // dispatch({
+      //   type: 'user/loginUser',
+      //   payload: {
+      //     userName: username,
+      //     password: password,
+      //   },
+      // }).then((response: any) => {
+      //   if (response) {
+      //     navigation.navigate('Home');
+      //   } else {
+      //     setSnackbarMessage('Invalid username or password');
+      //     setSnackbarVisible(true);
+      //     return;
+      //   }
+      // });
+
+      dispatch(loginUser({userName: username, password: password}))
+        .then(response => {
+          console.log('Mobile side - login result response : ' + response);
+
+          console.log(
+            'Mobile side - login result response.payload : ' + response.payload,
+          );
+
+          console.log(
+            'Mobile side - login result response.payload.success : ' +
+              response.payload.success,
+          );
+          if (response.payload.success) {
+            navigation.navigate('Home');
+          } else {
+            setSnackbarMessage('Invalid username or password');
+            setSnackbarVisible(true);
+          }
+        })
+        .catch(error => {
+          setSnackbarMessage('An error occurred');
+          setSnackbarVisible(true);
+        });
     }
   };
 
-  const gotoHome = () => {
-    navigation.navigate('Home');
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (isFocused) {
       setUsername('');
       setPassword('');
     }
-    return () => {};
   }, [isFocused]);
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
-      <View>
-        <View
-          style={{
-            justifyContent: 'center',
-            flexDirection: 'row',
-            marginTop: 16,
-          }}>
-          <Text>Username : </Text>
-          <TextInput
-            onChangeText={val => setUsername(val)}
-            value={username}
-            style={{
-              width: '60%',
-              borderWidth: 1,
-              padding: 10,
-            }}
-          />
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            flexDirection: 'row',
-            marginTop: 16,
-          }}>
-          <Text>Password : </Text>
-          <TextInput
-            onChangeText={val => setPassword(val)}
-            value={password}
-            style={{
-              width: '60%',
-              borderWidth: 1,
-              padding: 10,
-            }}
-            secureTextEntry={true}
-          />
-        </View>
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              backgroundColor: '#DDDDDD',
-              padding: 10,
-              width: '30%',
-              borderRadius: 5,
-              marginTop: 16,
-              marginBottom: 16,
-            }}
-            onPress={checkLogin}>
-            <Text>Login</Text>
-          </TouchableOpacity>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <Text>Username:</Text>
+        <TextInput
+          style={styles.input}
+          value={username}
+          onChangeText={setUsername}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text>Password:</Text>
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={checkLogin}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, styles.registerButton]}
+          onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.registerButtonText}>Register</Text>
+        </TouchableOpacity>
       </View>
       <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
         action={{
-          label: 'Login Failed',
-          onPress: () => {
-            setUsername('');
-            setPassword('');
-          },
+          label: 'Dismiss',
+          onPress: () => setSnackbarVisible(false),
         }}>
-        username or password is invalid
+        {snackbarMessage}
       </Snackbar>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    padding: 16,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 8,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  input: {
+    width: '60%',
+    borderWidth: 1,
+    padding: 10,
+    marginLeft: 8,
   },
-  highlight: {
-    fontWeight: '700',
+  buttonContainer: {
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    width: '30%',
+    borderRadius: 5,
+  },
+  registerButton: {
+    backgroundColor: 'blue',
+  },
+  registerButtonText: {
+    color: 'white',
   },
 });
 
