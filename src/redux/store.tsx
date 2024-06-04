@@ -2,7 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {counterReducer} from './reducers/counter-reducer';
 import {dailyMissionReducer} from './reducers/daily-reducer';
 import {taskReducer} from './reducers/task-reducer';
-import {userReducer} from './reducers/user-reducer';
+import userReducer from './reducers/user-reducer';
 
 const store = configureStore({
   reducer: {

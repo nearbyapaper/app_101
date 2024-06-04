@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {Snackbar} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
-import {loginUser} from './redux/actions/user-action';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from './redux/store';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -20,6 +20,19 @@ function Login({navigation}) {
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
+  const userLoginReducer = useSelector((state: RootState) => state.user.user);
+
+  console.log('userLoginReducer :: ' + userLoginReducer);
+
+  useEffect(() => {
+    if (userLoginReducer) {
+      navigation.navigate('Home');
+    } else {
+      setSnackbarMessage('Please enter both username and password');
+      setSnackbarVisible(true);
+    }
+  }, [navigation, userLoginReducer]);
 
   const checkLogin = () => {
     if (!username || !password) {
@@ -31,55 +44,13 @@ function Login({navigation}) {
     if (username === '1' && password === '1') {
       navigation.navigate('Home');
     } else {
-      // setSnackbarMessage('Invalid username or password');
-      // setSnackbarVisible(true);
-      // dispatch({
-      //   type: 'user/loginUser',
-      //   payload: {
-      //     userName: username,
-      //     password: password,
-      //   },
-      // });
-      // dispatch(loginUser(userName: username, password: password));
-      // dispatch({
-      //   type: 'user/loginUser',
-      //   payload: {
-      //     userName: username,
-      //     password: password,
-      //   },
-      // }).then((response: any) => {
-      //   if (response) {
-      //     navigation.navigate('Home');
-      //   } else {
-      //     setSnackbarMessage('Invalid username or password');
-      //     setSnackbarVisible(true);
-      //     return;
-      //   }
-      // });
-
-      dispatch(loginUser({userName: username, password: password}))
-        .then(response => {
-          console.log('Mobile side - login result response : ' + response);
-
-          console.log(
-            'Mobile side - login result response.payload : ' + response.payload,
-          );
-
-          console.log(
-            'Mobile side - login result response.payload.success : ' +
-              response.payload.success,
-          );
-          if (response.payload.success) {
-            navigation.navigate('Home');
-          } else {
-            setSnackbarMessage('Invalid username or password');
-            setSnackbarVisible(true);
-          }
-        })
-        .catch(error => {
-          setSnackbarMessage('An error occurred');
-          setSnackbarVisible(true);
-        });
+      dispatch({
+        type: 'user/loginUser',
+        payload: {
+          userName: username,
+          password: password,
+        },
+      });
     }
   };
 

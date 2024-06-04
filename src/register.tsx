@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {User, createUser} from './redux/actions/user-action';
-import {RootState} from './redux/store';
 
 interface RegisterProps {
   navigation: any;

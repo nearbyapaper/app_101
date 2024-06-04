@@ -2,6 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ADD_USER, LOGIN_USER, CREATE_USER} from '../types/user-type';
 import axios from 'axios';
 
+// Define User Interface
 export interface User {
   name: string;
   userName: string;
@@ -11,6 +12,7 @@ export interface User {
   address: string;
 }
 
+// Define Action Interfaces
 export interface AddUserAction {
   payload: User;
   type: typeof ADD_USER;
@@ -28,16 +30,13 @@ export interface CreateUserAction {
 
 export type UserActionTypes = AddUserAction | LoginUserAction;
 
+// Action Creators
 export const addUser = (user: User): AddUserAction => ({
   type: ADD_USER,
   payload: user,
 });
 
-// export const loginUser = (user: User): LoginUserAction => ({
-//   type: LOGIN_USER,
-//   payload: user,
-// });
-
+// Async Thunk to Create User
 export const createUser = createAsyncThunk(
   'user/createUser',
   async (data: User, thunkAPI) => {
@@ -53,20 +52,26 @@ export const createUser = createAsyncThunk(
         },
       );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
       console.log('error : ' + error);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
     }
   },
 );
 
-interface loginData {
+// Define Login Data Interface
+interface LoginData {
   userName: string;
   password: string;
 }
+
+// Async Thunk to Login User
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async (data: loginData, thunkAPI) => {
+  async (data: LoginData, thunkAPI) => {
     console.log('loginUser data = ' + JSON.stringify(data));
     try {
       const response = await axios.post(
@@ -79,9 +84,12 @@ export const loginUser = createAsyncThunk(
         },
       );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
       console.log('error : ' + error);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
     }
   },
 );

@@ -1,73 +1,56 @@
-import {User, createUser, loginUser} from '../actions/user-action';
 import {createSlice} from '@reduxjs/toolkit';
+import {createUser, loginUser} from '../actions/user-action';
+import {User} from '../actions/user-action';
 
 export interface UserState {
-  user: User;
+  user: User | null;
   loading: boolean;
   error: string | null;
 }
 
-// const initialize: UserState = {
-//   user: {
-//     name: '',
-//     userName: '',
-//     password: '',
-//     email: '',
-//     phone: '',
-//     address: '',
-//   },
-//   loading: false,
-//   error: null,
-// };
-
-// interface DataState {
-//   data: any;
-//   loading: boolean;
-//   error: string | null;
-// }
-
 const initialState: UserState = {
-  user: {
-    name: '',
-    userName: '',
-    password: '',
-    email: '',
-    phone: '',
-    address: '',
-  },
+  user: null,
   loading: false,
   error: null,
 };
 
-export const userReducer = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
   extraReducers: builder => {
     builder
       .addCase(createUser.pending, state => {
+        console.log('call createUser Pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(createUser.fulfilled, (state, action) => {
+        console.log('call createUser Success :: ', action.payload);
         state.loading = false;
         state.user = action.payload;
       })
       .addCase(createUser.rejected, (state, action) => {
+        console.log('call createUser Error :: ', action.payload);
         state.loading = false;
         state.error = action.payload as string;
       })
       .addCase(loginUser.pending, state => {
+        console.log('call LoginUser Pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log('call LoginUser Success :: ', action.payload);
         state.loading = false;
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        console.log('call LoginUser Error :: ', action.payload);
         state.loading = false;
         state.error = action.payload as string;
       });
   },
 });
+
+export default userSlice.reducer;
