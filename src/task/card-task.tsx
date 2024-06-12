@@ -2,6 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Card, Text, Chip, TextInput} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
+import {deleteTask} from '../redux/actions/task-action';
 
 interface Task {
   id: string;
@@ -17,9 +18,10 @@ interface CardTaskProps {
   data: Task;
   id: string;
   list: Task[];
+  refreshTask: () => void;
 }
 
-const CardTask: React.FC<CardTaskProps> = ({data, id, list}) => {
+const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
   const [editable, setEditable] = useState(false);
   const [taskDetails, setTaskDetails] = useState({
     name: data.name,
@@ -54,9 +56,14 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list}) => {
   }, [editable, taskDetails, data, id, list, dispatch]);
 
   const handleDelete = useCallback(() => {
-    const updatedList = list.filter(task => task.id !== id);
-    dispatch({type: 'UPDATE_TASK', payload: updatedList});
-  }, [id, list, dispatch]);
+    const killTask = list.filter(task => task.id !== id);
+    dispatch(deleteTask(killTask)).then((res: any) => {
+      console.log('Task deleted successfully :' + res);
+      if (res !== undefined) {
+        refreshTask();
+      }
+    });
+  }, [list, dispatch, id, refreshTask]);
 
   const handleChange = useCallback((field: keyof Task, value: string) => {
     setTaskDetails(prev => ({...prev, [field]: value}));

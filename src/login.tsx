@@ -11,6 +11,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {Snackbar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './redux/store';
+import {loginUser} from './redux/actions/user-action';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -22,8 +23,6 @@ function Login({navigation}) {
   const dispatch = useDispatch();
 
   const userLoginReducer = useSelector((state: RootState) => state.user.user);
-
-  console.log('userLoginReducer :: ' + userLoginReducer);
 
   useEffect(() => {
     if (userLoginReducer) {
@@ -44,13 +43,12 @@ function Login({navigation}) {
     if (username === '1' && password === '1') {
       navigation.navigate('Home');
     } else {
-      dispatch({
-        type: 'user/loginUser',
-        payload: {
+      dispatch(
+        loginUser({
           userName: username,
           password: password,
-        },
-      });
+        }),
+      );
     }
   };
 

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
-import {User, createUser} from './redux/actions/user-action';
+import {User} from './redux/actions/user-action';
 
 interface RegisterProps {
   navigation: any;
@@ -15,10 +15,6 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-
-  // const userReducer = useSelector((state: RootState) => state.user.user);
-
-  // console.log('userReducer : ', userReducer);
 
   const handleSave = () => {
     if (
@@ -35,19 +31,12 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         phone,
         address,
       };
-      dispatch({type: 'ADD_USER', payload: newUser});
-      dispatch(createUser(newUser));
+      // dispatch({type: 'ADD_USER', payload: newUser});
+      dispatch({type: 'user/createUser', payload: newUser});
       navigation.navigate('Login');
     }
   };
   const dispatch = useDispatch();
-
-  //   useEffect(() => {
-  //     return () => {
-  //       console.log('clean up state');
-  //       setName('');
-  //     };
-  //   }, []);
 
   const validatePhoneNumber = (number: string) => {
     const phoneRegex = /^\d{10}$/; // Regex for 10-digit phone number
@@ -83,7 +72,7 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.container}>
       <Text>Register</Text>
       <TextInput
         style={styles.input}
@@ -102,6 +91,7 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         value={password}
         onChangeText={setPassword}
         placeholder="Your password"
+        secureTextEntry={true}
       />
       <TextInput
         style={styles.input}
@@ -121,9 +111,7 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         onChangeText={setAddress}
         placeholder="Your address"
       />
-      <TouchableOpacity
-        onPress={handleSave}
-        style={{borderWidth: 1, marginTop: 8, padding: 8, borderRadius: 5}}>
+      <TouchableOpacity onPress={handleSave} style={styles.btnSave}>
         <Text>Save</Text>
       </TouchableOpacity>
     </View>
@@ -138,6 +126,8 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginTop: 8,
   },
+  btnSave: {borderWidth: 1, marginTop: 8, padding: 8, borderRadius: 5},
+  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
 });
 
 export default Register;

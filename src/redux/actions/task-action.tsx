@@ -1,4 +1,7 @@
+import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ADD_TASK, UPDATE_TASK} from '../types/task-type';
+import {TASK_PORT} from '../../api-port';
+import axios from 'axios';
 
 export interface Task {
   id: string;
@@ -8,6 +11,7 @@ export interface Task {
   detail: string;
   targetDate: string;
   createdDate?: string;
+  createdUser: string;
 }
 
 export interface AddTaskAction {
@@ -27,7 +31,96 @@ export const addTask = (task: Task): AddTaskAction => ({
   payload: task,
 });
 
-export const updateTask = (taskList: Task[]): UpdateTaskAction => ({
-  type: UPDATE_TASK,
-  payload: taskList,
-});
+export const createTask = createAsyncThunk(
+  'task/createTask',
+  async (data: Task, thunkAPI) => {
+    console.log('createTask data = ' + JSON.stringify(data));
+    try {
+      const response = await axios.post(
+        `http://localhost:${TASK_PORT}/task/create`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
+      console.log('error : ' + error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
+    }
+  },
+);
+
+export const deleteTask = createAsyncThunk(
+  'task/deleteTask',
+  async (data: Task, thunkAPI) => {
+    console.log('deleteTask data = ' + JSON.stringify(data));
+    try {
+      const response = await axios.post(
+        `http://localhost:${TASK_PORT}/task/delete`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
+      console.log('error : ' + error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
+    }
+  },
+);
+
+export const updateTask = createAsyncThunk(
+  'task/updateTask',
+  async (data: Task, thunkAPI) => {
+    console.log('updateTask data = ' + JSON.stringify(data));
+    try {
+      const response = await axios.post(
+        `http://localhost:${TASK_PORT}/task/update`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
+      console.log('error : ' + error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
+    }
+  },
+);
+
+export const getTask = createAsyncThunk(
+  'task/getTask',
+  async (data: Task, thunkAPI) => {
+    console.log('getTask data = ' + JSON.stringify(data));
+    try {
+      const response = await axios.get(
+        `http://localhost:${TASK_PORT}/task/list/${data}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      // Ensure error type is any to access response.data
+      console.log('error : ' + error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || 'Something went wrong',
+      );
+    }
+  },
+);

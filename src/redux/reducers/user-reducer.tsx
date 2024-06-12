@@ -1,9 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {createUser, loginUser} from '../actions/user-action';
-import {User} from '../actions/user-action';
-
+// import {User} from '../actions/user-action';
+import {LoginUserResponse} from '../types/user-type';
 export interface UserState {
-  user: User | null;
+  user: LoginUserResponse | null;
   loading: boolean;
   error: string | null;
 }
@@ -41,9 +41,10 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log('call LoginUser Success :: ', action.payload);
+        console.log('call LoginUser Success data :: ', action.payload.data);
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload?.data;
+        console.log('call LoginUser Success set state.user :: ', state.user);
       })
       .addCase(loginUser.rejected, (state, action) => {
         console.log('call LoginUser Error :: ', action.payload);

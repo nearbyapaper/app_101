@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ADD_USER, LOGIN_USER, CREATE_USER} from '../types/user-type';
 import axios from 'axios';
-
+import {LOGIN_USER_PORT} from '../../api-port';
 // Define User Interface
 export interface User {
   name: string;
@@ -43,7 +43,7 @@ export const createUser = createAsyncThunk(
     console.log('createUser data = ' + JSON.stringify(data));
     try {
       const response = await axios.post(
-        'http://localhost:3333/user/create',
+        `http://localhost:${LOGIN_USER_PORT}/user/create`,
         data,
         {
           headers: {
@@ -53,29 +53,30 @@ export const createUser = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      // Ensure error type is any to access response.data
-      console.log('error : ' + error);
-      return thunkAPI.rejectWithValue(
-        error.response?.data || 'Something went wrong',
-      );
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error: ', error);
+        console.error('Error response: ', error.response);
+        console.error('Error response data: ', error.response?.data);
+        return thunkAPI.rejectWithValue(
+          error.response?.data || 'Something went wrong',
+        );
+      } else {
+        console.error('Non-Axios error: ', error);
+        return thunkAPI.rejectWithValue('Something went wrong');
+      }
     }
   },
 );
 
-// Define Login Data Interface
-interface LoginData {
-  userName: string;
-  password: string;
-}
-
 // Async Thunk to Login User
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async (data: LoginData, thunkAPI) => {
+  async (data, thunkAPI) => {
     console.log('loginUser data = ' + JSON.stringify(data));
+    console.log('LOGIN_USER_PORT = ' + LOGIN_USER_PORT);
     try {
       const response = await axios.post(
-        'http://localhost:3333/user/login',
+        `http://localhost:${LOGIN_USER_PORT}/user/login`,
         data,
         {
           headers: {
@@ -84,12 +85,18 @@ export const loginUser = createAsyncThunk(
         },
       );
       return response.data;
-    } catch (error: any) {
-      // Ensure error type is any to access response.data
-      console.log('error : ' + error);
-      return thunkAPI.rejectWithValue(
-        error.response?.data || 'Something went wrong',
-      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error: ', error);
+        console.error('Error response: ', error.response);
+        console.error('Error response data: ', error.response?.data);
+        return thunkAPI.rejectWithValue(
+          error.response?.data || 'Something went wrong',
+        );
+      } else {
+        console.error('Non-Axios error: ', error);
+        return thunkAPI.rejectWithValue('Something went wrong');
+      }
     }
   },
 );
