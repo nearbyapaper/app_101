@@ -23,8 +23,8 @@ const MyTask: React.FC = (): JSX.Element => {
     setTaskList(taskListReducer);
   }, [taskListReducer]);
 
-  console.log('taskListReducer :: ' + taskListReducer);
-  console.log('taskList :: ' + taskList);
+  // console.log('taskListReducer :: ' + taskListReducer);
+  // console.log('taskList :: ' + taskList);
 
   const handleAddTask = useCallback(() => {
     const taskId: string = (

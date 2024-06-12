@@ -2,7 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Card, Text, Chip, TextInput} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-import {deleteTask} from '../redux/actions/task-action';
+import {deleteTask, updateTask} from '../redux/actions/task-action';
 
 interface Task {
   id: string;
@@ -46,23 +46,28 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
   const handleEditOrSave = useCallback(() => {
     if (editable) {
       const updatedTask: Task = {...data, ...taskDetails};
-      const updatedList = list.map(task =>
-        task.id === id ? updatedTask : task,
-      );
-
-      dispatch({type: 'UPDATE_TASK', payload: updatedList});
+      dispatch(updateTask(updatedTask)).then((res: any) => {
+        if (res !== undefined) {
+          refreshTask();
+        }
+      });
     }
     setEditable(!editable);
   }, [editable, taskDetails, data, id, list, dispatch]);
 
   const handleDelete = useCallback(() => {
-    const killTask = list.filter(task => task.id !== id);
-    dispatch(deleteTask(killTask)).then((res: any) => {
-      console.log('Task deleted successfully :' + res);
-      if (res !== undefined) {
-        refreshTask();
-      }
-    });
+    const killTask = list.filter(task => task.id === id);
+    console.log('killTask :: ' + killTask);
+    if (killTask?.length > 0 && killTask) {
+      const delTask = killTask[0];
+      console.log('delTask :: ' + delTask);
+      dispatch(deleteTask(delTask)).then((res: any) => {
+        console.log('Task deleted successfully :' + res);
+        if (res !== undefined) {
+          refreshTask();
+        }
+      });
+    }
   }, [list, dispatch, id, refreshTask]);
 
   const handleChange = useCallback((field: keyof Task, value: string) => {
