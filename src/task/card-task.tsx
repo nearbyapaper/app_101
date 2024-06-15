@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Card, Text, Chip, TextInput} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
 import {deleteTask, updateTask} from '../redux/actions/task-action';
+import {APP_THEME} from '../theme';
 
 interface Task {
   id: string;
@@ -57,12 +58,9 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
 
   const handleDelete = useCallback(() => {
     const killTask = list.filter(task => task.id === id);
-    console.log('killTask :: ' + killTask);
     if (killTask?.length > 0 && killTask) {
       const delTask = killTask[0];
-      console.log('delTask :: ' + delTask);
       dispatch(deleteTask(delTask)).then((res: any) => {
-        console.log('Task deleted successfully :' + res);
         if (res !== undefined) {
           refreshTask();
         }
@@ -77,31 +75,39 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
   return (
     <View>
       <Card style={styles.card}>
-        <Text variant="bodyMedium">Task:</Text>
+        <Text style={styles.textLabel} variant="bodyMedium">
+          Task:
+        </Text>
         <TextInput
           value={taskDetails.name}
           editable={editable}
           onChangeText={text => handleChange('name', text)}
           style={styles.input}
         />
-        <Text variant="bodyMedium">Type:</Text>
+        <Text style={styles.textLabel} variant="bodyMedium">
+          Type:
+        </Text>
         <TextInput
           value={taskDetails.type}
           editable={editable}
           onChangeText={text => handleChange('type', text)}
           style={styles.input}
         />
-        <Text variant="bodyMedium">Status:</Text>
+        <Text style={styles.textLabel} variant="bodyMedium">
+          Status:
+        </Text>
         <TextInput
           value={taskDetails.status}
           editable={editable}
           onChangeText={text => handleChange('status', text)}
           style={styles.input}
         />
-        <Text variant="bodyMedium">
+        <Text style={styles.textLabel} variant="bodyMedium">
           Create: {data.createdDate?.toString() || new Date().toString()}
         </Text>
-        <Text variant="bodyMedium">Detail:</Text>
+        <Text style={styles.textLabel} variant="bodyMedium">
+          Detail:
+        </Text>
         <TextInput
           value={taskDetails.detail}
           editable={editable}
@@ -125,10 +131,13 @@ const styles = StyleSheet.create({
   card: {
     margin: 16,
     padding: 16,
+    color: APP_THEME.primaryColor,
   },
   input: {
     height: 40,
     marginBottom: 8,
+    color: APP_THEME.textColorBlack,
+    fontSize: APP_THEME.textSizeMedium,
   },
   chipContainer: {
     flexDirection: 'row',
@@ -137,6 +146,10 @@ const styles = StyleSheet.create({
   },
   chip: {
     marginRight: 8,
+  },
+  textLabel: {
+    color: APP_THEME.textColorBlack,
+    fontSize: APP_THEME.textSizeMedium,
   },
 });
 

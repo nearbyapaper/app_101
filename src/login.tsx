@@ -12,6 +12,7 @@ import {Snackbar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './redux/store';
 import {loginUser} from './redux/actions/user-action';
+import {APP_THEME} from './theme';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -80,7 +81,7 @@ function Login({navigation}) {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={checkLogin}>
-          <Text>Login</Text>
+          <Text style={styles.textLogin}>Login</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
@@ -106,7 +107,6 @@ function Login({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     justifyContent: 'center',
     padding: 16,
   },
@@ -128,16 +128,19 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: APP_THEME.buttonActive,
     padding: 10,
     width: '30%',
     borderRadius: 5,
   },
   registerButton: {
-    backgroundColor: 'blue',
+    backgroundColor: APP_THEME.buttonInactive,
   },
   registerButtonText: {
     color: 'white',
+  },
+  textLogin: {
+    color: APP_THEME.textColorWhite,
   },
 });
 
