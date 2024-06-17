@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ADD_TASK, UPDATE_TASK} from '../types/task-type';
-import {TASK_PORT} from '../../api-port';
 import axios from 'axios';
+import {Env} from '../../env';
 
 export interface Task {
   id: string;
@@ -36,15 +36,11 @@ export const createTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('createTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(
-        `http://localhost:${TASK_PORT}/task/create`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.post(`${Env.test}/task/create`, data, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       return response.data;
     } catch (error: any) {
       // Ensure error type is any to access response.data
@@ -61,15 +57,11 @@ export const deleteTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('deleteTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(
-        `http://localhost:${TASK_PORT}/task/delete`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.post(`${Env.test}/task/delete`, data, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       return response.data;
     } catch (error: any) {
       // Ensure error type is any to access response.data
@@ -86,15 +78,11 @@ export const updateTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('updateTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(
-        `http://localhost:${TASK_PORT}/task/update`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.post(`${Env.test}/task/update`, data, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       return response.data;
     } catch (error: any) {
       // Ensure error type is any to access response.data
@@ -111,9 +99,7 @@ export const getTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('getTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.get(
-        `http://localhost:${TASK_PORT}/task/list/${data}`,
-      );
+      const response = await axios.get(`${Env.test}/task/list/${data}`);
       return response.data;
     } catch (error: any) {
       // Ensure error type is any to access response.data

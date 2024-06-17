@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {ADD_USER, LOGIN_USER, CREATE_USER} from '../types/user-type';
 import axios from 'axios';
-import {LOGIN_USER_PORT} from '../../api-port';
+import {Env} from '../../env';
 // Define User Interface
 export interface User {
   name: string;
@@ -42,15 +42,11 @@ export const createUser = createAsyncThunk(
   async (data: User, thunkAPI) => {
     console.log('createUser data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(
-        `http://localhost:${LOGIN_USER_PORT}/user/create`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.post(`${Env.test}/user/create`, data, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       return response.data;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -73,17 +69,12 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (data, thunkAPI) => {
     console.log('loginUser data = ' + JSON.stringify(data));
-    console.log('LOGIN_USER_PORT = ' + LOGIN_USER_PORT);
     try {
-      const response = await axios.post(
-        `http://localhost:${LOGIN_USER_PORT}/user/login`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.post(`${Env.test}/user/login`, data, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
