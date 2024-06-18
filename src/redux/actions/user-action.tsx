@@ -42,7 +42,7 @@ export const createUser = createAsyncThunk(
   async (data: User, thunkAPI) => {
     console.log('createUser data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(`${Env.test}/user/create`, data, {
+      const response = await axios.post(`${Env.test.api}/user/create`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -70,7 +70,7 @@ export const loginUser = createAsyncThunk(
   async (data, thunkAPI) => {
     console.log('loginUser data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(`${Env.test}/user/login`, data, {
+      const response = await axios.post(`${Env.test.api}/user/login`, data, {
         headers: {
           'Content-Type': 'application/json',
         },

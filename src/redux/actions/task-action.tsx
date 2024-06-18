@@ -36,7 +36,7 @@ export const createTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('createTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(`${Env.test}/task/create`, data, {
+      const response = await axios.post(`${Env.test.api}/task/create`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -57,7 +57,7 @@ export const deleteTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('deleteTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(`${Env.test}/task/delete`, data, {
+      const response = await axios.post(`${Env.test.api}/task/delete`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -78,7 +78,7 @@ export const updateTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('updateTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.post(`${Env.test}/task/update`, data, {
+      const response = await axios.post(`${Env.test.api}/task/update`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -99,7 +99,7 @@ export const getTask = createAsyncThunk(
   async (data: Task, thunkAPI) => {
     console.log('getTask data = ' + JSON.stringify(data));
     try {
-      const response = await axios.get(`${Env.test}/task/list/${data}`);
+      const response = await axios.get(`${Env.test.api}/task/list/${data}`);
       return response.data;
     } catch (error: any) {
       // Ensure error type is any to access response.data

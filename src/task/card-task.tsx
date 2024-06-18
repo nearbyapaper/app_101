@@ -82,6 +82,7 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
           value={taskDetails.name}
           editable={editable}
           onChangeText={text => handleChange('name', text)}
+          autoCapitalize="none"
           style={styles.input}
         />
         <Text style={styles.textLabel} variant="bodyMedium">
@@ -91,6 +92,7 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
           value={taskDetails.type}
           editable={editable}
           onChangeText={text => handleChange('type', text)}
+          autoCapitalize="none"
           style={styles.input}
         />
         <Text style={styles.textLabel} variant="bodyMedium">
@@ -100,6 +102,7 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
           value={taskDetails.status}
           editable={editable}
           onChangeText={text => handleChange('status', text)}
+          autoCapitalize="none"
           style={styles.input}
         />
         <Text style={styles.textLabel} variant="bodyMedium">
@@ -112,6 +115,7 @@ const CardTask: React.FC<CardTaskProps> = ({data, id, list, refreshTask}) => {
           value={taskDetails.detail}
           editable={editable}
           onChangeText={text => handleChange('detail', text)}
+          autoCapitalize="none"
           style={styles.input}
         />
         <View style={styles.chipContainer}>

@@ -79,12 +79,14 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         value={name}
         onChangeText={setName}
         placeholder="Your name"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         value={userName}
         onChangeText={setUserName}
         placeholder="Your username"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
@@ -92,24 +94,28 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         onChangeText={setPassword}
         placeholder="Your password"
         secureTextEntry={true}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         value={email}
         onChangeText={setEmail}
         placeholder="Your email"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         value={phone}
         onChangeText={setPhone}
         placeholder="Your phone"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         value={address}
         onChangeText={setAddress}
         placeholder="Your address"
+        autoCapitalize="none"
       />
       <TouchableOpacity onPress={handleSave} style={styles.btnSave}>
         <Text>Save</Text>

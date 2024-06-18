@@ -55,6 +55,7 @@ const AddModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             value={name}
             onChangeText={val => setName(val)}
             style={styles.inputTextName}
+            autoCapitalize="none"
           />
         </View>
         <View>

@@ -68,6 +68,8 @@ function Login({navigation}) {
           style={styles.input}
           value={username}
           onChangeText={setUsername}
+          autoCapitalize="none"
+          // keyboardType="web-search"
         />
       </View>
       <View style={styles.inputContainer}>
@@ -77,6 +79,7 @@ function Login({navigation}) {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.buttonContainer}>
