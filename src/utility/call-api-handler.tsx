@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E5E5E5',
+    alignContent: 'center',
   },
   containerLoading: {
     flex: 1,
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    opacity: 0.6,
   },
   containerError: {
     flex: 1,
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   textStatus: {
     color: APP_THEME.textColorBlack,
     fontSize: APP_THEME.textSizeExtraLarge,
+    textAlign: 'center',
   },
   textErrorDetail: {
     color: APP_THEME.textColorBlack,

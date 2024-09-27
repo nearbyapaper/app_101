@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {useDispatch} from 'react-redux';
-import {User} from './redux/actions/user-action';
+import {useDispatch, useSelector} from 'react-redux';
+import {createUser, User} from './redux/actions/user-action';
+import TouchableButtonAPI from './utility/touchable-button-api';
+import {APP_THEME} from './theme';
+import {RootState} from './redux/store';
+import CallAPIHandler from './utility/call-api-handler';
 
 interface RegisterProps {
   navigation: any;
@@ -15,6 +19,9 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+
+  const isLoading = useSelector((state: RootState) => state.user.loading);
+  const error = useSelector((state: RootState) => state.user.error);
 
   const handleSave = () => {
     if (
@@ -31,9 +38,12 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
         phone,
         address,
       };
-      // dispatch({type: 'ADD_USER', payload: newUser});
-      dispatch({type: 'user/createUser', payload: newUser});
-      navigation.navigate('Login');
+      dispatch(createUser(newUser)).then((res: any) => {
+        console.log('User created successfully res', res);
+        if (res) {
+          navigation.navigate('Login');
+        }
+      });
     }
   };
   const dispatch = useDispatch();
@@ -72,55 +82,67 @@ const Register: React.FC<RegisterProps> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Register</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Your name"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={userName}
-        onChangeText={setUserName}
-        placeholder="Your username"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Your password"
-        secureTextEntry={true}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Your email"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={phone}
-        onChangeText={setPhone}
-        placeholder="Your phone"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={address}
-        onChangeText={setAddress}
-        placeholder="Your address"
-        autoCapitalize="none"
-      />
-      <TouchableOpacity onPress={handleSave} style={styles.btnSave}>
-        <Text>Save</Text>
-      </TouchableOpacity>
-    </View>
+    <CallAPIHandler
+      isLoading={isLoading}
+      isError={error !== null && error ? true : false}
+      isNotFound={false}
+      errorMessage={error || ''}
+      callback={handleSave}>
+      <View style={styles.container}>
+        <Text>Register</Text>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+          placeholder="Your name"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          value={userName}
+          onChangeText={setUserName}
+          placeholder="Your username"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Your password"
+          secureTextEntry={true}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Your email"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          value={phone}
+          onChangeText={setPhone}
+          placeholder="Your phone"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          value={address}
+          onChangeText={setAddress}
+          placeholder="Your address"
+          autoCapitalize="none"
+        />
+        <TouchableButtonAPI
+          textTitle={'Save'}
+          textStyle={styles.textSave}
+          buttonStyle={styles.btnSave}
+          onPress={handleSave}
+          containerStyle={undefined}
+          isLoading={isLoading}
+        />
+      </View>
+    </CallAPIHandler>
   );
 };
 
@@ -134,6 +156,9 @@ const styles = StyleSheet.create({
   },
   btnSave: {borderWidth: 1, marginTop: 8, padding: 8, borderRadius: 5},
   container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  textSave: {
+    fontSize: APP_THEME.textSizeMedium,
+  },
 });
 
 export default Register;

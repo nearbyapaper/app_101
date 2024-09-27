@@ -13,6 +13,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './redux/store';
 import {loginUser} from './redux/actions/user-action';
 import {APP_THEME} from './theme';
+import TouchableButtonAPI from './utility/touchable-button-api';
+import VIText from './utility/VIText';
+import {mainStyles} from './styles/mainStyles';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -24,6 +27,7 @@ function Login({navigation}) {
   const dispatch = useDispatch();
 
   const userLoginReducer = useSelector((state: RootState) => state.user.user);
+  const loading = useSelector((state: RootState) => state.user.loading);
 
   useEffect(() => {
     if (userLoginReducer) {
@@ -61,7 +65,7 @@ function Login({navigation}) {
   }, [isFocused]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, mainStyles.colContainer]}>
       <View style={styles.inputContainer}>
         <Text>Username:</Text>
         <TextInput
@@ -82,11 +86,14 @@ function Login({navigation}) {
           autoCapitalize="none"
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={checkLogin}>
-          <Text style={styles.textLogin}>Login</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableButtonAPI
+        textTitle={'Login'}
+        textStyle={styles.textLogin}
+        buttonStyle={styles.button}
+        onPress={checkLogin}
+        containerStyle={styles.buttonContainer}
+        isLoading={loading}
+      />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.button, styles.registerButton]}
@@ -94,6 +101,7 @@ function Login({navigation}) {
           <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
       </View>
+      <VIText title={'TextVI'} />
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
