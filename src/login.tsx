@@ -11,7 +11,6 @@ import {useIsFocused} from '@react-navigation/native';
 import {Snackbar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './redux/store';
-import {loginUser} from './redux/actions/user-action';
 import {APP_THEME} from './theme';
 import TouchableButtonAPI from './utility/touchable-button-api';
 import VIText from './utility/VIText';
@@ -26,17 +25,17 @@ function Login({navigation}) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const userLoginReducer = useSelector((state: RootState) => state.user.user);
-  const loading = useSelector((state: RootState) => state.user.loading);
+  // const userLoginReducer = useSelector((state: RootState) => state.user.user);
+  // const loading = useSelector((state: RootState) => state.user.loading);
 
-  useEffect(() => {
-    if (userLoginReducer) {
-      navigation.navigate('Home');
-    } else {
-      setSnackbarMessage('Please enter both username and password');
-      setSnackbarVisible(true);
-    }
-  }, [navigation, userLoginReducer]);
+  // useEffect(() => {
+  //   if (userLoginReducer) {
+  //     navigation.navigate('Home');
+  //   } else {
+  //     setSnackbarMessage('Please enter both username and password');
+  //     setSnackbarVisible(true);
+  //   }
+  // }, [navigation, userLoginReducer]);
 
   const checkLogin = () => {
     if (!username || !password) {
@@ -48,12 +47,12 @@ function Login({navigation}) {
     if (username === '1' && password === '1') {
       navigation.navigate('Home');
     } else {
-      dispatch(
-        loginUser({
-          userName: username,
-          password: password,
-        }),
-      );
+      // dispatch(
+      //   loginUser({
+      //     userName: username,
+      //     password: password,
+      //   }),
+      // );
     }
   };
 
@@ -92,7 +91,7 @@ function Login({navigation}) {
         buttonStyle={styles.button}
         onPress={checkLogin}
         containerStyle={styles.buttonContainer}
-        isLoading={loading}
+        isLoading={false}
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -101,7 +100,6 @@ function Login({navigation}) {
           <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
       </View>
-      <VIText title={'TextVI'} />
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}

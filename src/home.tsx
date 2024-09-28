@@ -2,18 +2,17 @@ import React, {useState, useMemo} from 'react';
 import {BottomNavigation, Text} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import MyTask from './task';
-import DailyMission from './daily';
+import HomePage from '../src/home/index';
 
 const Home = (): JSX.Element => {
   const [index, setIndex] = useState(0);
 
   const routes = useMemo(
     () => [
-      {key: 'feat1', title: 'Task'},
-      {key: 'feat2', title: 'Daily Mission'},
-      {key: 'feat3', title: 'Recents'},
-      {key: 'feat4', title: 'Notifications'},
+      {key: 'feat1', title: 'Home'},
+      {key: 'feat2', title: 'Watchlist'},
+      {key: 'feat3', title: 'Tools'},
+      {key: 'feat4', title: 'Settings'},
     ],
     [],
   );
@@ -21,10 +20,10 @@ const Home = (): JSX.Element => {
   const renderScene = useMemo(
     () =>
       BottomNavigation.SceneMap({
-        feat1: MyTask,
-        feat2: DailyMission,
-        feat3: () => <Text>Recents</Text>,
-        feat4: () => <Text>Notifications</Text>,
+        feat1: () => <HomePage />,
+        feat2: () => <Text>Watchlist</Text>,
+        feat3: () => <Text>Tools</Text>,
+        feat4: () => <Text>Settings</Text>,
       }),
     [],
   );

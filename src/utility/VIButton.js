@@ -28,7 +28,7 @@ const VIButton = props => {
 
 const styles = StyleSheet.create({
   defaultStyles: {
-    backgroundColor: 'gold',
+    backgroundColor: '#62DAFB',
     paddingVertical: 10, // Space around the text vertically
     paddingHorizontal: 20, // Space around the text horizontally
     borderRadius: 5,
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   defaultTextStyle: {
     fontSize: 16,
     color: 'black',
+    fontWeight: 'bold',
   },
 });
 

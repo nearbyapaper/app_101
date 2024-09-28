@@ -12,4 +12,11 @@ export const mainStyles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
   },
+  titleTextStyle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: 'gold',
+    alignSelf: 'center',
+  },
 });
