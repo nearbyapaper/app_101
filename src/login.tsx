@@ -15,6 +15,8 @@ import {APP_THEME} from './theme';
 import TouchableButtonAPI from './utility/touchable-button-api';
 import VIText from './utility/VIText';
 import {mainStyles} from './styles/mainStyles';
+import VITextInput from './utility/VITextInput';
+import VIButton from './utility/VIButton';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
@@ -66,40 +68,38 @@ function Login({navigation}) {
   return (
     <SafeAreaView style={[styles.container, mainStyles.colContainer]}>
       <View style={styles.inputContainer}>
-        <Text>Username:</Text>
-        <TextInput
-          style={styles.input}
+        <VITextInput
+          label={'Username : '}
           value={username}
-          onChangeText={setUsername}
-          autoCapitalize="none"
-          // keyboardType="web-search"
+          action={setUsername}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Password:</Text>
-        <TextInput
-          style={styles.input}
+        <VITextInput
+          label={'Password : '}
           value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          autoCapitalize="none"
+          action={setPassword}
+          isSecureTextEntry={true}
         />
       </View>
-      <TouchableButtonAPI
-        textTitle={'Login'}
-        textStyle={styles.textLogin}
-        buttonStyle={styles.button}
-        onPress={checkLogin}
-        containerStyle={styles.buttonContainer}
-        isLoading={false}
-      />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.registerButton]}
-          onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.registerButtonText}>Register</Text>
-        </TouchableOpacity>
+      <View
+        style={{
+          alignSelf: 'center',
+          flexDirection: 'row',
+        }}>
+        <VIButton
+          title={'Login'}
+          action={checkLogin}
+          style={{marginRight: 8}}
+          buttonStyle={mainStyles.mainButonWithMarginRight8}
+        />
+
+        <VIButton
+          title={'Register'}
+          action={() => navigation.navigate('Register')}
+        />
       </View>
+
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
@@ -120,10 +120,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 8,
+    marginHorizontal: 24,
   },
   input: {
     width: '60%',

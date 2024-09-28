@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {View, Image, StyleSheet, ScrollView} from 'react-native';
 import {mainStyles} from '../styles/mainStyles';
 import VIText from '../utility/VIText';
@@ -13,6 +14,7 @@ import VITextInput from '../utility/VITextInput';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const businessStore = useSelector(state => state.business); // Verify state shape
   const [name, setName] = useState('');
 
@@ -59,16 +61,23 @@ const HomePage = () => {
           }
           myStyle={mainStyles.titleTextStyle}
         />
-        <View style={styles.inputContainer}>
-          <VITextInput label={'Business Name'} value={name} action={setName} />
+        <View style={mainStyles.selfAlignMarginVertical}>
           <VIButton title={'Explore Business'} action={gotoExplore} />
         </View>
-        <VIText
+        {/* <View style={styles.inputContainer}>
+          <VITextInput
+            label={'Business Name : '}
+            value={name}
+            action={setName}
+            isRowContent={true}
+          />
+        </View> */}
+        {/* <VIText
           title={
             'State check Business Name : ' + (currentBusiness?.name || 'N/A')
           }
           myStyle={mainStyles.titleTextStyle}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
@@ -87,7 +96,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 16,
-    alignSelf: 'center',
   },
 });
 

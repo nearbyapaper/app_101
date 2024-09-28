@@ -10,6 +10,7 @@ import store from './src/redux/store';
 import Login from './src/login';
 import Home from './src/home';
 import Register from './src/register';
+import ExploreBusiness from './src/business/explore-business';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ const App = () => {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="ExploreBusiness" component={ExploreBusiness} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
