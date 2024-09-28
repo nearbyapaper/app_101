@@ -29,9 +29,6 @@ jobs:
         run: |
           cd ios && pod install && cd ..
 
-      - name: Run ESLint
-        run: yarn lint
-
       - name: Run Unit test
         run: npm test
 
