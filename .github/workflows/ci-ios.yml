@@ -39,11 +39,11 @@ jobs:
       #     ./gradlew assembleDebug
 
       # Optional: Build iOS app (requires Apple Developer setup)
-      - name: Build iOS
-        run: |
-          cd ios
-          xcodebuild -workspace App101.xcworkspace \
-            -scheme App101 \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 12' \
-            clean build
+      # - name: Build iOS
+      #   run: |
+      #     cd ios
+      #     xcodebuild -workspace App101.xcworkspace \
+      #       -scheme App101 \
+      #       -sdk iphonesimulator \
+      #       -destination 'platform=iOS Simulator,name=iPhone 12' \
+      #       clean build
