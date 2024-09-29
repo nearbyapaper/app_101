@@ -32,11 +32,11 @@ jobs:
       - name: Run Unit test
         run: npm test
 
-      # Optional: Build Android APK
-      - name: Build Android APK
-        run: |
-          cd android
-          ./gradlew assembleDebug
+      # # Optional: Build Android APK
+      # - name: Build Android APK
+      #   run: |
+      #     cd android
+      #     ./gradlew assembleDebug
 
       # Optional: Build iOS app (requires Apple Developer setup)
       - name: Build iOS
